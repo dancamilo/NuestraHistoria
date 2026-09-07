@@ -9,7 +9,7 @@ const CONFIG = {
 
   // Fecha en que empezó la relación (para el contador de días)
   // Formato: "AAAA-MM-DD"
-  fechaInicio: "2025-08-21",
+  fechaInicio: "2026-08-21",
 
   // Palabra secreta para entrar al sitio (solo es un detalle bonito,
   // no es seguridad real: cualquiera que vea el código fuente la puede ver)
