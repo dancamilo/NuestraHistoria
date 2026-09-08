@@ -21,9 +21,9 @@ const CONFIG = {
   // Fotos del carrusel. Sube tus imágenes a la carpeta /images
   // con estos mismos nombres, o cambia el "src" por el nombre real de tu archivo.
   fotos: [
-    { src: "images/foto1.jpg", titulo: "Nuestra primera cita", fecha: "14 feb 2024" },
-    { src: "images/foto2.jpg", titulo: "Ese viaje inolvidable", fecha: "jun 2024" },
-    { src: "images/foto3.jpg", titulo: "Un domingo cualquiera", fecha: "ago 2024" },
-    { src: "images/foto4.jpg", titulo: "Celebrando un año", fecha: "feb 2025" }
+    { src: "image/foto1.jpg", titulo: "Nuestra primera cita", fecha: "14 feb 2024" },
+    { src: "image/foto2.jpg", titulo: "Ese viaje inolvidable", fecha: "jun 2024" },
+    { src: "image/foto3.jpg", titulo: "Un domingo cualquiera", fecha: "ago 2024" },
+    { src: "image/foto4.jpg", titulo: "Celebrando un año", fecha: "feb 2025" }
   ]
 };
