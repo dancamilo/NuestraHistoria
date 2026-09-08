@@ -1,198 +1,40 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nosotros</title>
+<!-- ============== CARRUSEL ============== -->
+<section id="momentos" class="section section-beige-dark">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <div class="section-inner">
 
-<link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+    <h2>Nuestros momentos</h2>
 
-<!-- ============== PANTALLA DE ENTRADA ============== -->
-<div id="lockScreen" class="lock-screen">
-  <div class="lock-card">
-    <p class="lock-eyebrow">antes de entrar</p>
-    <h1 class="lock-title">Nuestra clave secreta</h1>
-    <p class="lock-text">Escribe la palabra que solo nosotros conocemos.</p>
-    <form id="lockForm" class="lock-form">
-      <input type="text" id="lockInput" autocomplete="off" placeholder="palabra secreta" />
-      <button type="submit">Entrar</button>
-    </form>
-    <p id="lockError" class="lock-error" hidden>No es esa. Intenta de nuevo.</p>
+    <div class="carousel" id="carousel">
+
+      <div
+        class="carousel-track"
+        id="carouselTrack"
+      ></div>
+
+      <button
+        class="carousel-arrow carousel-prev"
+        id="carouselPrev"
+        aria-label="Anterior"
+      >
+        ‹
+      </button>
+
+      <button
+        class="carousel-arrow carousel-next"
+        id="carouselNext"
+        aria-label="Siguiente"
+      >
+        ›
+      </button>
+
+      <div
+        class="carousel-dots"
+        id="carouselDots"
+      ></div>
+
+    </div>
+
   </div>
-</div>
 
-<!-- ============== CONTENIDO ============== -->
-<div id="site" class="site" hidden>
-
-  <header class="nav" id="mainNav">
-    <span class="nav-brand">Nosotros</span>
-    <nav>
-      <ul class="nav-links">
-        <li><a href="#inicio">Inicio</a></li>
-        <li><a href="#momentos">Momentos</a></li>
-        <li><a href="#tiempo">Fechas</a></li>
-        <li><a href="#creciendo">Creciendo</a></li>
-        <li><a href="#suenos">Sueños</a></li>
-        <li><a href="#playlist">Playlist</a></li>
-        <li><a href="#dashboard">Dashboard</a></li>
-      </ul>
-    </nav>
-    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
-  </header>
-
-  <!-- ============== HERO ============== -->
-  <section id="inicio" class="hero">
-    <div class="hero-inner">
-      <p class="hero-names"><span id="heroNombreEl"></span> &amp; <span id="heroNombreElla"></span></p>
-      <div class="hero-counter">
-        <span id="diasJuntos">0</span>
-        <span class="hero-counter-label">días juntos</span>
-      </div>
-      <p class="hero-line">y contando, uno a la vez.</p>
-    </div>
-  </section>
-
-  <!-- ============== CARRUSEL ============== -->
-  <section id="momentos" class="section section-beige-dark">
-    <div class="section-inner">
-      <h2>Nuestros momentos</h2>
-      <div class="carousel" id="carousel">
-        <div class="carousel-track" id="carouselTrack"></div>
-        <button class="carousel-arrow carousel-prev" id="carouselPrev" aria-label="Anterior">‹</button>
-        <button class="carousel-arrow carousel-next" id="carouselNext" aria-label="Siguiente">›</button>
-        <div class="carousel-dots" id="carouselDots"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============== LÍNEA DE TIEMPO ============== -->
-  <section id="tiempo" class="section">
-    <div class="section-inner">
-      <h2>Fechas importantes</h2>
-      <form class="inline-form" id="timelineForm">
-        <input type="date" id="timelineFecha" required>
-        <input type="text" id="timelineTitulo" placeholder="¿Qué pasó ese día?" required>
-        <button type="submit">Agregar</button>
-      </form>
-      <div class="timeline" id="timelineList"></div>
-    </div>
-  </section>
-
-  <!-- ============== CRECIENDO JUNTOS ============== -->
-  <section id="creciendo" class="section section-beige-dark">
-    <div class="section-inner">
-      <h2>Creciendo juntos</h2>
-      <p class="section-sub">Un espacio honesto: lo que queremos mejorar, y cómo.</p>
-      <div class="book">
-        <div class="book-page" id="pageEl">
-          <h3 id="pageElTitulo">Él</h3>
-          <ul class="growth-list" id="growthListEl"></ul>
-          <form class="inline-form stacked" data-persona="el">
-            <input type="text" class="growth-defecto" placeholder="Algo que quiero mejorar" required>
-            <input type="text" class="growth-compromiso" placeholder="¿Cómo voy a trabajarlo?" required>
-            <button type="submit">Agregar</button>
-          </form>
-        </div>
-        <div class="book-spine"></div>
-        <div class="book-page" id="pageElla">
-          <h3 id="pageEllaTitulo">Ella</h3>
-          <ul class="growth-list" id="growthListElla"></ul>
-          <form class="inline-form stacked" data-persona="ella">
-            <input type="text" class="growth-defecto" placeholder="Algo que quiero mejorar" required>
-            <input type="text" class="growth-compromiso" placeholder="¿Cómo voy a trabajarlo?" required>
-            <button type="submit">Agregar</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============== SUEÑOS Y METAS ============== -->
-  <section id="suenos" class="section">
-    <div class="section-inner">
-      <h2>Sueños y metas</h2>
-      <form class="inline-form" id="dreamForm">
-        <input type="text" id="dreamInput" placeholder="Algo que soñamos lograr juntos" required>
-        <button type="submit">Agregar</button>
-      </form>
-      <ul class="dream-list" id="dreamList"></ul>
-    </div>
-  </section>
-
-  <!-- ============== PLAYLIST ============== -->
-  <section id="playlist" class="section section-beige-dark">
-    <div class="section-inner">
-      <h2>Nuestra playlist</h2>
-      <div class="playlist-embed">
-        <iframe id="spotifyFrame" style="border-radius:12px" src="" width="100%" height="352" frameBorder="0"
-          allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-      </div>
-      <div class="playlist-actions">
-        <button id="notifyPermBtn" class="btn-ghost">Activar notificaciones</button>
-        <button id="addSongBtn" class="btn-solid">Agregué una canción nueva</button>
-      </div>
-      <ul class="song-log" id="songLog"></ul>
-    </div>
-  </section>
-
-  <!-- ============== DASHBOARD ============== -->
-  <section id="dashboard" class="section">
-    <div class="section-inner">
-      <h2>Dashboard</h2>
-      <div class="dashboard-grid">
-
-        <div class="dash-col">
-          <h3>Pensé en ti</h3>
-          <form id="noteForm" class="inline-form stacked">
-            <textarea id="noteText" placeholder="Escribe algo que pensaste hoy…" required></textarea>
-            <select id="noteAutor">
-              <option value="">Sin firmar</option>
-              <option id="noteAutorEl"></option>
-              <option id="noteAutorElla"></option>
-            </select>
-            <button type="submit">Guardar nota</button>
-          </form>
-          <div class="notes-feed" id="notesFeed"></div>
-        </div>
-
-        <div class="dash-col">
-          <h3>Pendientes</h3>
-          <form id="todoForm" class="inline-form">
-            <input type="text" id="todoInput" placeholder="Algo por hacer juntos" required>
-            <button type="submit">Agregar</button>
-          </form>
-          <div class="todo-block">
-            <p class="todo-subtitle">Por hacer</p>
-            <ul class="todo-list" id="todoPending"></ul>
-          </div>
-          <div class="todo-block">
-            <p class="todo-subtitle">Hecho</p>
-            <ul class="todo-list todo-done" id="todoDone"></ul>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <p>Hecho con calma, para nosotros dos.</p>
-  </footer>
-
-</div>
-
-<div id="toast" class="toast" hidden></div>
-
-<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
-<script src="js/data.js"></script>
-<script src="js/firebase-config.js"></script>
-<script src="js/app.js"></script>
-</body>
-</html>
+</section>
