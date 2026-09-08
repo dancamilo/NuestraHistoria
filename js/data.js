@@ -16,7 +16,7 @@ const CONFIG = {
   claveSecreta: "PizzadeLittle",
 
   // Link de tu playlist de Spotify (clic derecho en la playlist → Compartir → Copiar link)
-  spotifyPlaylistUrl: "https://open.spotify.com/playlist/6tbcUkbr5lvA3L3pwxZy3f?si=8BZHjz2USdWMdg-mIcfq9Q&utm_source=copy-link",
+  spotifyPlaylistUrl: "",
 
   // Fotos del carrusel. Sube tus imágenes a la carpeta /images
   // con estos mismos nombres, o cambia el "src" por el nombre real de tu archivo.
