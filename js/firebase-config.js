@@ -1,15 +1,14 @@
 /* ============================================================
    FIREBASE-CONFIG.JS
-   Reemplaza estos valores por los de TU proyecto de Firebase.
    ============================================================ */
 
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_PROYECTO.firebaseapp.com",
-  projectId: "TU_PROYECTO",
-  storageBucket: "TU_PROYECTO.appspot.com",
-  messagingSenderId: "TU_SENDER_ID",
-  appId: "TU_APP_ID"
+  apiKey: "AIzaSyBto0wq9hVAZwKazVTFhAHDLndrYRDO9x8",
+  authDomain: "nosotros-61129.firebaseapp.com",
+  projectId: "nosotros-61129",
+  storageBucket: "nosotros-61129.firebasestorage.app",
+  messagingSenderId: "1065136207335",
+  appId: "1:1065136207335:web:c6eb22468c8f449a143942"
 };
 
 const FIREBASE_LISTO = firebaseConfig.apiKey !== "TU_API_KEY";
