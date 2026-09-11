@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initNav();
   initHeroNames();
   initCounter();
-  initCarousel();
+  initGallery();
   initSpotify();
 
   if (!FIREBASE_LISTO) {
@@ -218,280 +218,129 @@ function initCounter() {
 
 
 /* ============================================================
-   CARRUSEL
+   GALERÍA
    ============================================================ */
 
-function initCarousel() {
-  const carousel = document.getElementById("carousel");
-  const track = document.getElementById("carouselTrack");
-  const dotsWrap = document.getElementById("carouselDots");
+function initGallery() {
+  const miniGallery = document.getElementById("miniGallery");
+  const openBtn = document.getElementById("openGalleryBtn");
+  const modal = document.getElementById("galleryModal");
+  const closeBtn = document.getElementById("galleryClose");
+  const grid = document.getElementById("galleryGrid");
 
-  const fotos = CONFIG.fotos || [];
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightboxImg");
+  const lightboxDate = document.getElementById("lightboxDate");
+  const lightboxClose = document.getElementById("lightboxClose");
+  const lightboxPrev = document.getElementById("lightboxPrev");
+  const lightboxNext = document.getElementById("lightboxNext");
 
   if (
-    !carousel ||
-    !track ||
-    !dotsWrap ||
-    fotos.length === 0
+    !miniGallery || !openBtn || !modal || !closeBtn || !grid ||
+    !lightbox || !lightboxImg || !lightboxDate ||
+    !lightboxClose || !lightboxPrev || !lightboxNext
   ) {
     return;
   }
 
-  let index = 0;
+  const fotos = CONFIG.fotos || [];
+  if (fotos.length === 0) return;
 
-  /* Limpiar por si la función se ejecutara más de una vez */
-  track.innerHTML = "";
-  dotsWrap.innerHTML = "";
+  let lightboxIndex = 0;
 
-  fotos.forEach((foto, i) => {
-    const slide = document.createElement("div");
-
-    slide.className = "slide";
-
-    /* ---------- imagen ---------- */
+  function crearThumb(foto) {
+    const thumb = document.createElement("div");
+    thumb.className = "thumb";
 
     const img = document.createElement("img");
-
     img.src = foto.src;
     img.alt = "";
-
-    img.loading = i === 0 ? "eager" : "lazy";
-
-    /* ---------- fecha ---------- */
-
-    const caption = document.createElement("div");
-
-    caption.className = "slide-caption";
-
-    /*
-      No mostramos el título.
-      Solo se muestra la fecha si existe.
-    */
-
-    if (foto.fecha) {
-      const fecha = document.createElement("span");
-
-      fecha.className = "fecha";
-      fecha.textContent = foto.fecha;
-
-      caption.appendChild(fecha);
-    }
-
-    slide.appendChild(img);
-    slide.appendChild(caption);
-
-    /* ---------- imagen cargada ---------- */
-
-    img.addEventListener("load", () => {
-      if (i === index) {
-        ajustarAltura();
-      }
-    });
-
-    /* ---------- error de imagen ---------- */
+    img.loading = "lazy";
 
     img.addEventListener("error", () => {
-      console.error(
-        "No se pudo cargar la imagen:",
-        foto.src
-      );
-
-      slide.classList.add("no-image");
-
-      if (i === index) {
-        ajustarAltura();
-      }
+      thumb.classList.add("no-image");
     });
 
-    track.appendChild(slide);
+    const fecha = document.createElement("span");
+    fecha.className = "fecha";
+    fecha.textContent = foto.fecha || "";
 
-    /* ---------- punto ---------- */
+    thumb.appendChild(img);
+    thumb.appendChild(fecha);
+    return thumb;
+  }
 
-    const dot = document.createElement("button");
-
-    dot.type = "button";
-
-    dot.className =
-      "dot" + (i === 0 ? " active" : "");
-
-    dot.setAttribute(
-      "aria-label",
-      `Ir a la foto ${i + 1}`
-    );
-
-    dot.addEventListener("click", () => {
-      goTo(i);
-    });
-
-    dotsWrap.appendChild(dot);
+  /* Mini galería: hasta 6 fotos de muestra en la página principal */
+  fotos.slice(0, 6).forEach((foto, i) => {
+    const thumb = crearThumb(foto);
+    thumb.addEventListener("click", () => abrirLightbox(i));
+    miniGallery.appendChild(thumb);
   });
 
-  const slides =
-    track.querySelectorAll(".slide");
+  /* Galería completa: todas las fotos */
+  fotos.forEach((foto, i) => {
+    const thumb = crearThumb(foto);
+    thumb.addEventListener("click", () => abrirLightbox(i));
+    grid.appendChild(thumb);
+  });
 
-
-  /* ==========================================================
-     AJUSTAR ALTURA DEL CARRUSEL
-     ========================================================== */
-
-  function ajustarAltura() {
-    const slide = slides[index];
-
-    if (!slide) return;
-
-    const img = slide.querySelector("img");
-
-    if (!img) return;
-
-    /*
-      Si la imagen todavía no terminó de cargar,
-      esperamos a que ocurra el evento "load".
-    */
-    if (
-      !img.naturalWidth ||
-      !img.naturalHeight
-    ) {
-      return;
-    }
-
-    const ancho =
-      carousel.clientWidth;
-
-    if (!ancho) return;
-
-    /*
-      Calculamos la altura exacta que necesita
-      la imagen manteniendo su proporción original.
-    */
-    const alturaImagen =
-      ancho *
-      (
-        img.naturalHeight /
-        img.naturalWidth
-      );
-
-    const caption =
-      slide.querySelector(".slide-caption");
-
-    const alturaCaption =
-      caption
-        ? caption.offsetHeight
-        : 0;
-
-    /*
-      La altura final es:
-      imagen completa + espacio de la fecha.
-    */
-    const alturaFinal =
-      alturaImagen + alturaCaption;
-
-    carousel.style.height =
-      `${alturaFinal}px`;
+  function abrirGaleria() {
+    modal.hidden = false;
   }
 
-
-  /* ==========================================================
-     CAMBIAR DE FOTO
-     ========================================================== */
-
-  function goTo(i) {
-    index =
-      (i + fotos.length) %
-      fotos.length;
-
-    track.style.transform =
-      `translateX(-${index * 100}%)`;
-
-    dotsWrap
-      .querySelectorAll(".dot")
-      .forEach((dot, di) => {
-        dot.classList.toggle(
-          "active",
-          di === index
-        );
-      });
-
-    /*
-      Cada foto puede tener una proporción diferente,
-      por eso reajustamos la altura al cambiar.
-    */
-    ajustarAltura();
+  function cerrarGaleria() {
+    modal.hidden = true;
   }
 
+  openBtn.addEventListener("click", abrirGaleria);
+  closeBtn.addEventListener("click", cerrarGaleria);
 
-  /* ==========================================================
-     FLECHA ANTERIOR
-     ========================================================== */
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) cerrarGaleria();
+  });
 
-  const prev =
-    document.getElementById(
-      "carouselPrev"
-    );
-
-  if (prev) {
-    prev.addEventListener(
-      "click",
-      () => {
-        goTo(index - 1);
-      }
-    );
+  function mostrarFoto() {
+    const foto = fotos[lightboxIndex];
+    lightboxImg.src = foto.src;
+    lightboxDate.textContent = foto.fecha || "";
   }
 
-
-  /* ==========================================================
-     FLECHA SIGUIENTE
-     ========================================================== */
-
-  const next =
-    document.getElementById(
-      "carouselNext"
-    );
-
-  if (next) {
-    next.addEventListener(
-      "click",
-      () => {
-        goTo(index + 1);
-      }
-    );
+  function abrirLightbox(i) {
+    lightboxIndex = i;
+    mostrarFoto();
+    lightbox.hidden = false;
   }
 
-
-  /* ==========================================================
-     REDIMENSIONAMIENTO
-     ========================================================== */
-
-  window.addEventListener(
-    "resize",
-    ajustarAltura
-  );
-
-  window.addEventListener(
-    "load",
-    ajustarAltura
-  );
-
-  /*
-    Intentamos ajustar la altura después
-    de que el navegador haya tenido tiempo
-    de cargar la primera imagen.
-  */
-  setTimeout(
-    ajustarAltura,
-    100
-  );
-
-
-  /* ==========================================================
-     CAMBIO AUTOMÁTICO
-     ========================================================== */
-
-  if (fotos.length > 1) {
-    setInterval(() => {
-      goTo(index + 1);
-    }, 6000);
+  function cerrarLightbox() {
+    lightbox.hidden = true;
   }
+
+  function siguienteFoto() {
+    lightboxIndex = (lightboxIndex + 1) % fotos.length;
+    mostrarFoto();
+  }
+
+  function anteriorFoto() {
+    lightboxIndex = (lightboxIndex - 1 + fotos.length) % fotos.length;
+    mostrarFoto();
+  }
+
+  lightboxClose.addEventListener("click", cerrarLightbox);
+  lightboxNext.addEventListener("click", siguienteFoto);
+  lightboxPrev.addEventListener("click", anteriorFoto);
+
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) cerrarLightbox();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (lightbox.hidden) return;
+    if (e.key === "Escape") cerrarLightbox();
+    if (e.key === "ArrowRight") siguienteFoto();
+    if (e.key === "ArrowLeft") anteriorFoto();
+  });
 }
+
 
 
 /* ---------- spotify ---------- */
@@ -1643,4 +1492,3 @@ function initTodos() {
       }
     );
 }
-

@@ -17,32 +17,17 @@ const CONFIG = {
   claveSecreta: "PizzadeLittle",
 
   // Link de tu playlist de Spotify
-  // Lo dejamos vacío por ahora.
   spotifyPlaylistUrl: "",
 
-  // Fotos del carrusel.
-  // Las imágenes están en la carpeta /image
+  // Fotos de la galería.
+  // Sube cada imagen a la carpeta /image y agrega aquí una línea
+  // con su nombre de archivo y la fecha (opcional).
+  // Puedes agregar tantas como quieras, no hay límite.
   fotos: [
-    {
-      src: "image/foto1.jpg",
-      titulo: "",
-      fecha: ""
-    },
-    {
-      src: "image/foto2.jpg",
-      titulo: "",
-      fecha: ""
-    },
-    {
-      src: "image/foto3.jpg",
-      titulo: "",
-      fecha: ""
-    },
-    {
-      src: "image/foto4.jpg",
-      titulo: "",
-      fecha: ""
-    }
+    { src: "image/foto1.jpg", fecha: "" },
+    { src: "image/foto2.jpg", fecha: "" },
+    { src: "image/foto3.jpg", fecha: "" },
+    { src: "image/foto4.jpg", fecha: "" }
   ]
 
 };

@@ -58,16 +58,12 @@
     </div>
   </section>
 
-  <!-- ============== CARRUSEL ============== -->
+  <!-- ============== GALERÍA ============== -->
   <section id="momentos" class="section section-beige-dark">
     <div class="section-inner">
       <h2>Nuestros momentos</h2>
-      <div class="carousel" id="carousel">
-        <div class="carousel-track" id="carouselTrack"></div>
-        <button class="carousel-arrow carousel-prev" id="carouselPrev" aria-label="Anterior">‹</button>
-        <button class="carousel-arrow carousel-next" id="carouselNext" aria-label="Siguiente">›</button>
-        <div class="carousel-dots" id="carouselDots"></div>
-      </div>
+      <div class="mini-gallery" id="miniGallery"></div>
+      <button class="btn-solid" id="openGalleryBtn" type="button">Ver galería completa</button>
     </div>
   </section>
 
@@ -185,6 +181,21 @@
     <p>Hecho con calma, para nosotros dos.</p>
   </footer>
 
+</div>
+
+<div class="gallery-modal" id="galleryModal" hidden>
+  <div class="gallery-modal-inner">
+    <button class="gallery-close" id="galleryClose" type="button" aria-label="Cerrar galería">✕</button>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Cerrar">✕</button>
+  <button class="lightbox-arrow lightbox-prev" id="lightboxPrev" type="button" aria-label="Anterior">‹</button>
+  <img id="lightboxImg" src="" alt="">
+  <p class="lightbox-date" id="lightboxDate"></p>
+  <button class="lightbox-arrow lightbox-next" id="lightboxNext" type="button" aria-label="Siguiente">›</button>
 </div>
 
 <div id="toast" class="toast" hidden></div>
