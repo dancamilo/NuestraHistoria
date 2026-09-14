@@ -222,33 +222,15 @@ function initCounter() {
    ============================================================ */
 
 function initGallery() {
-  const miniGallery = document.getElementById("miniGallery");
-  const openBtn = document.getElementById("openGalleryBtn");
-  const modal = document.getElementById("galleryModal");
-  const closeBtn = document.getElementById("galleryClose");
   const grid = document.getElementById("galleryGrid");
 
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImg = document.getElementById("lightboxImg");
-  const lightboxDate = document.getElementById("lightboxDate");
-  const lightboxClose = document.getElementById("lightboxClose");
-  const lightboxPrev = document.getElementById("lightboxPrev");
-  const lightboxNext = document.getElementById("lightboxNext");
-
-  if (
-    !miniGallery || !openBtn || !modal || !closeBtn || !grid ||
-    !lightbox || !lightboxImg || !lightboxDate ||
-    !lightboxClose || !lightboxPrev || !lightboxNext
-  ) {
-    return;
-  }
+  if (!grid) return;
 
   const fotos = CONFIG.fotos || [];
+
   if (fotos.length === 0) return;
 
-  let lightboxIndex = 0;
-
-  function crearThumb(foto) {
+  fotos.forEach((foto) => {
     const thumb = document.createElement("div");
     thumb.className = "thumb";
 
@@ -267,77 +249,8 @@ function initGallery() {
 
     thumb.appendChild(img);
     thumb.appendChild(fecha);
-    return thumb;
-  }
 
-  /* Mini galería: hasta 6 fotos de muestra en la página principal */
-  fotos.slice(0, 6).forEach((foto, i) => {
-    const thumb = crearThumb(foto);
-    thumb.addEventListener("click", () => abrirLightbox(i));
-    miniGallery.appendChild(thumb);
-  });
-
-  /* Galería completa: todas las fotos */
-  fotos.forEach((foto, i) => {
-    const thumb = crearThumb(foto);
-    thumb.addEventListener("click", () => abrirLightbox(i));
     grid.appendChild(thumb);
-  });
-
-  function abrirGaleria() {
-    modal.hidden = false;
-  }
-
-  function cerrarGaleria() {
-    modal.hidden = true;
-  }
-
-  openBtn.addEventListener("click", abrirGaleria);
-  closeBtn.addEventListener("click", cerrarGaleria);
-
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) cerrarGaleria();
-  });
-
-  function mostrarFoto() {
-    const foto = fotos[lightboxIndex];
-    lightboxImg.src = foto.src;
-    lightboxDate.textContent = foto.fecha || "";
-  }
-
-  function abrirLightbox(i) {
-    lightboxIndex = i;
-    mostrarFoto();
-    lightbox.hidden = false;
-  }
-
-  function cerrarLightbox() {
-    lightbox.hidden = true;
-  }
-
-  function siguienteFoto() {
-    lightboxIndex = (lightboxIndex + 1) % fotos.length;
-    mostrarFoto();
-  }
-
-  function anteriorFoto() {
-    lightboxIndex = (lightboxIndex - 1 + fotos.length) % fotos.length;
-    mostrarFoto();
-  }
-
-  lightboxClose.addEventListener("click", cerrarLightbox);
-  lightboxNext.addEventListener("click", siguienteFoto);
-  lightboxPrev.addEventListener("click", anteriorFoto);
-
-  lightbox.addEventListener("click", (e) => {
-    if (e.target === lightbox) cerrarLightbox();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (lightbox.hidden) return;
-    if (e.key === "Escape") cerrarLightbox();
-    if (e.key === "ArrowRight") siguienteFoto();
-    if (e.key === "ArrowLeft") anteriorFoto();
   });
 }
 
