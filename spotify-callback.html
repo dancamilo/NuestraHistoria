@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conectando Spotify…</title>
+</head>
+<body>
+  <p id="status">Conectando tu cuenta de Spotify…</p>
+
+  <script>
+    (async () => {
+      const status = document.getElementById("status");
+      const params = new URLSearchParams(window.location.search);
+
+      const code = params.get("code");
+      const state = params.get("state");
+
+      if (params.get("error") || !code || !state) {
+        status.textContent =
+          "No se completó la conexión. Puedes cerrar esta ventana e intentarlo de nuevo.";
+        return;
+      }
+
+      try {
+        const url =
+          "https://us-central1-nosotros-61129.cloudfunctions.net/spotifyComplete";
+
+        const response = await fetch(
+          `${url}?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`
+        );
+
+        if (!response.ok) {
+          throw new Error("No se pudo guardar la conexión.");
+        }
+
+        status.textContent =
+          "Spotify quedó conectado. Esta ventana se cerrará…";
+
+        if (window.opener) {
+          window.opener.postMessage(
+            { type: "spotify-connected" },
+            "*"
+          );
+        }
+
+        setTimeout(() => window.close(), 900);
+      } catch (error) {
+        console.error(error);
+
+        status.textContent =
+          "No se pudo guardar la conexión. Cierra esta ventana e inténtalo de nuevo.";
+      }
+    })();
+  </script>
+</body>
+</html>

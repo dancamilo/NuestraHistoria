@@ -16,8 +16,12 @@ const CONFIG = {
   // Solo es un detalle bonito, no es seguridad real.
   claveSecreta: "PizzadeLittle",
 
-  // Link de tu playlist de Spotify
-  spotifyPlaylistUrl: "",
+  // Playlist que queremos vigilar.
+  spotifyPlaylistUrl: "https://open.spotify.com/playlist/6tbcUkbr5lvA3L3pwxZy3f",
+
+  // Identificador público de la aplicación creada en Spotify Developers.
+  spotifyClientId: "8085086b764d44d5bafbcaf222b76c13",
+
 
   // Fotos de la galería.
   // Sube cada imagen a la carpeta /image y agrega aquí una línea

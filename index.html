@@ -128,10 +128,17 @@
         <iframe id="spotifyFrame" style="border-radius:12px" src="" width="100%" height="352" frameBorder="0"
           allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
       </div>
-      <div class="playlist-actions">
-        <button id="notifyPermBtn" class="btn-ghost">Activar notificaciones</button>
-        <button id="addSongBtn" class="btn-solid">Agregué una canción nueva</button>
-      </div>
+        <div class="playlist-actions">
+           <button id="connectSpotifyBtn" class="btn-solid" type="button">
+              Conectar mi Spotify
+           </button>
+           <button id="notifyPermBtn" class="btn-ghost" type="button">
+               Activar notificaciones
+           </button>
+       </div>
+<p id="spotifyConnectionStatus" class="spotify-status" aria-live="polite">
+  Spotify aún no está conectado.
+</p>
       <ul class="song-log" id="songLog"></ul>
     </div>
   </section>

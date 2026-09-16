@@ -553,3 +553,14 @@ input, textarea, select {
   box-shadow: var(--shadow-soft);
   z-index: 90;
 }   
+
+.spotify-status {
+  min-height: 1.4em;
+  margin: -10px 0 24px;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+}
+
+.spotify-status.is-connected {
+  color: var(--navy-700);
+}

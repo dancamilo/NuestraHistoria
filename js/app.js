@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCounter();
   initGallery();
   initSpotify();
+  initSpotifyAuthorization();
 
   if (!FIREBASE_LISTO) {
     showFirebaseWarning();
@@ -302,7 +303,7 @@ function initSongs() {
       "songLog"
     );
 
-  if (!notifyBtn || !addBtn || !log) {
+  if (!notifyBtn || !log) {
     return;
   }
 
@@ -347,41 +348,54 @@ function initSongs() {
     }
   );
 
+addBtn.addEventListener(
+  "click",
+  () => {
+    const titulo = prompt(
+      "¿Cuál es el nombre de la canción?"
+    );
 
-  addBtn.addEventListener(
-    "click",
-    () => {
-
-      db.collection("songs")
-        .add({
-          mensaje:
-            "Se agregó una canción nueva a la playlist 🎵",
-
-          timestamp:
-            firebase.firestore.FieldValue
-              .serverTimestamp()
-        })
-        .then(() => {
-
-          toast(
-            "Avisado. La canción quedó en el registro."
-          );
-
-        })
-        .catch((error) => {
-
-          console.error(
-            "ERROR FIREBASE - GUARDAR SONG:",
-            error
-          );
-
-          toast(
-            "No se pudo guardar el registro."
-          );
-        });
+    if (!titulo || !titulo.trim()) {
+      return;
     }
-  );
 
+    const artista = prompt(
+      "¿Quién la canta?"
+    );
+
+    if (!artista || !artista.trim()) {
+      return;
+    }
+
+    db.collection("songs")
+      .add({
+        mensaje:
+          `Nueva canción: ${titulo.trim()} — ${artista.trim()} 🎵`,
+
+        titulo: titulo.trim(),
+        artista: artista.trim(),
+
+        timestamp:
+          firebase.firestore.FieldValue
+            .serverTimestamp()
+      })
+      .then(() => {
+        toast(
+          "Aviso enviado 💙"
+        );
+      })
+      .catch((error) => {
+        console.error(
+          "ERROR FIREBASE - GUARDAR SONG:",
+          error
+        );
+
+        toast(
+          "No se pudo enviar el aviso."
+        );
+      });
+  }
+);
 
   let primeraCarga = true;
 
