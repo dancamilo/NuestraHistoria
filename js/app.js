@@ -1,5 +1,5 @@
 /* ============================================================
-   APP.JS
+   APP.JS — VERSIÓN CORREGIDA
    ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initCounter();
   initGallery();
   initSpotify();
-  initSpotifyAuthorization();
 
   if (!FIREBASE_LISTO) {
     showFirebaseWarning();
@@ -256,27 +255,20 @@ function initGallery() {
 }
 
 
-
 /* ---------- spotify ---------- */
 
 function initSpotify() {
-  const url =
-    CONFIG.spotifyPlaylistUrl || "";
+  const url = CONFIG.spotifyPlaylistUrl || "";
 
-  const match =
-    url.match(
-      /playlist\/([a-zA-Z0-9]+)/
-    );
+  const match = url.match(
+    /playlist\/([a-zA-Z0-9]+)/
+  );
 
-  const id =
-    match ? match[1] : "";
+  const id = match ? match[1] : "";
 
   if (!id) return;
 
-  const frame =
-    document.getElementById(
-      "spotifyFrame"
-    );
+  const frame = document.getElementById("spotifyFrame");
 
   if (!frame) return;
 
@@ -289,141 +281,74 @@ function initSpotify() {
 
 function initSongs() {
   const notifyBtn =
-    document.getElementById(
-      "notifyPermBtn"
-    );
-
-  const addBtn =
-    document.getElementById(
-      "addSongBtn"
-    );
+    document.getElementById("notifyPermBtn");
 
   const log =
-    document.getElementById(
-      "songLog"
-    );
+    document.getElementById("songLog");
 
-  if (!notifyBtn || !log) {
+  if (!log) {
     return;
   }
 
-  updateNotifyBtn();
+  if (notifyBtn) {
+    updateNotifyBtn();
 
-
-  notifyBtn.addEventListener(
-    "click",
-    async () => {
-
-      if (!("Notification" in window)) {
-        toast(
-          "Este navegador no soporta notificaciones."
-        );
-
-        return;
-      }
-
-      try {
-        const perm =
-          await Notification.requestPermission();
-
-        updateNotifyBtn();
-
-        if (perm === "granted") {
+    notifyBtn.addEventListener(
+      "click",
+      async () => {
+        if (!("Notification" in window)) {
           toast(
-            "Notificaciones activadas 💙"
+            "Este navegador no soporta notificaciones."
           );
+
+          return;
         }
 
-      } catch (error) {
+        try {
+          const perm =
+            await Notification.requestPermission();
 
-        console.error(
-          "ERROR NOTIFICACIONES:",
-          error
-        );
+          updateNotifyBtn();
 
-        toast(
-          "No se pudieron activar las notificaciones."
-        );
+          if (perm === "granted") {
+            toast(
+              "Notificaciones activadas 💙"
+            );
+          }
+        } catch (error) {
+          console.error(
+            "ERROR NOTIFICACIONES:",
+            error
+          );
+
+          toast(
+            "No se pudieron activar las notificaciones."
+          );
+        }
       }
-    }
-  );
-
-addBtn.addEventListener(
-  "click",
-  () => {
-    const titulo = prompt(
-      "¿Cuál es el nombre de la canción?"
     );
-
-    if (!titulo || !titulo.trim()) {
-      return;
-    }
-
-    const artista = prompt(
-      "¿Quién la canta?"
-    );
-
-    if (!artista || !artista.trim()) {
-      return;
-    }
-
-    db.collection("songs")
-      .add({
-        mensaje:
-          `Nueva canción: ${titulo.trim()} — ${artista.trim()} 🎵`,
-
-        titulo: titulo.trim(),
-        artista: artista.trim(),
-
-        timestamp:
-          firebase.firestore.FieldValue
-            .serverTimestamp()
-      })
-      .then(() => {
-        toast(
-          "Aviso enviado 💙"
-        );
-      })
-      .catch((error) => {
-        console.error(
-          "ERROR FIREBASE - GUARDAR SONG:",
-          error
-        );
-
-        toast(
-          "No se pudo enviar el aviso."
-        );
-      });
   }
-);
+
 
   let primeraCarga = true;
-
 
   db.collection("songs")
     .orderBy("timestamp", "desc")
     .limit(20)
     .onSnapshot(
       (snapshot) => {
-
         log.innerHTML = "";
 
         snapshot.forEach((doc) => {
-
           const d = doc.data();
 
           const li =
-            document.createElement(
-              "li"
-            );
+            document.createElement("li");
 
           const fecha =
             d.timestamp &&
-            typeof d.timestamp.toDate ===
-              "function"
-              ? formatFecha(
-                  d.timestamp.toDate()
-                )
+            typeof d.timestamp.toDate === "function"
+              ? formatFecha(d.timestamp.toDate())
               : "";
 
           li.textContent =
@@ -439,32 +364,24 @@ addBtn.addEventListener(
         }
 
 
-        snapshot
-          .docChanges()
-          .forEach((change) => {
-
-            if (
-              change.type === "added" &&
-              "Notification" in window &&
-              Notification.permission ===
-                "granted"
-            ) {
-
-              new Notification(
-                "Nueva canción 🎵",
-                {
-                  body:
-                    change.doc.data()
-                      .mensaje || "",
-
-                  icon: ""
-                }
-              );
-            }
-          });
+        snapshot.docChanges().forEach((change) => {
+          if (
+            change.type === "added" &&
+            "Notification" in window &&
+            Notification.permission === "granted"
+          ) {
+            new Notification(
+              "Nueva canción 🎵",
+              {
+                body:
+                  change.doc.data().mensaje || "",
+                icon: ""
+              }
+            );
+          }
+        });
       },
       (error) => {
-
         console.error(
           "ERROR FIREBASE - SONGS:",
           error
@@ -479,13 +396,12 @@ addBtn.addEventListener(
 
 
   function updateNotifyBtn() {
+    if (!notifyBtn) return;
 
     if (
       "Notification" in window &&
-      Notification.permission ===
-        "granted"
+      Notification.permission === "granted"
     ) {
-
       notifyBtn.textContent =
         "Notificaciones activadas ✓";
 
@@ -499,14 +415,10 @@ addBtn.addEventListener(
 
 function initTimeline() {
   const form =
-    document.getElementById(
-      "timelineForm"
-    );
+    document.getElementById("timelineForm");
 
   const list =
-    document.getElementById(
-      "timelineList"
-    );
+    document.getElementById("timelineList");
 
   if (!form || !list) return;
 
@@ -514,7 +426,6 @@ function initTimeline() {
   form.addEventListener(
     "submit",
     (e) => {
-
       e.preventDefault();
 
       const fecha =
@@ -524,9 +435,7 @@ function initTimeline() {
 
       const titulo =
         document
-          .getElementById(
-            "timelineTitulo"
-          )
+          .getElementById("timelineTitulo")
           .value
           .trim();
 
@@ -534,23 +443,19 @@ function initTimeline() {
         return;
       }
 
-
       db.collection("timeline")
         .add({
           fecha,
           titulo
         })
         .then(() => {
-
           form.reset();
 
           toast(
             "Fecha añadida correctamente 💙"
           );
-
         })
         .catch((error) => {
-
           console.error(
             "ERROR FIREBASE - GUARDAR TIMELINE:",
             error
@@ -568,32 +473,24 @@ function initTimeline() {
     .orderBy("fecha", "asc")
     .onSnapshot(
       (snapshot) => {
-
         list.innerHTML = "";
 
         snapshot.forEach((doc) => {
-
           const d = doc.data();
 
           const item =
-            document.createElement(
-              "div"
-            );
+            document.createElement("div");
 
           item.className =
             "timeline-item";
-
 
           const fecha =
             new Date(
               d.fecha + "T00:00:00"
             );
 
-
           const dateEl =
-            document.createElement(
-              "span"
-            );
+            document.createElement("span");
 
           dateEl.className =
             "timeline-date";
@@ -601,18 +498,14 @@ function initTimeline() {
           dateEl.textContent =
             formatFecha(fecha);
 
-
           const titleEl =
-            document.createElement(
-              "span"
-            );
+            document.createElement("span");
 
           titleEl.className =
             "timeline-title";
 
           titleEl.textContent =
             d.titulo || "";
-
 
           item.append(
             dateEl,
@@ -623,7 +516,6 @@ function initTimeline() {
         });
       },
       (error) => {
-
         console.error(
           "ERROR FIREBASE - TIMELINE:",
           error
@@ -657,7 +549,6 @@ function initGrowth() {
       CONFIG.nombreEl;
   }
 
-
   if (tituloElla) {
     tituloElla.textContent =
       CONFIG.nombreElla;
@@ -669,16 +560,13 @@ function initGrowth() {
       '#creciendo form[data-persona]'
     )
     .forEach((form) => {
-
       form.addEventListener(
         "submit",
         (e) => {
-
           e.preventDefault();
 
           const persona =
             form.dataset.persona;
-
 
           const defecto =
             form
@@ -688,7 +576,6 @@ function initGrowth() {
               .value
               .trim();
 
-
           const compromiso =
             form
               .querySelector(
@@ -697,33 +584,27 @@ function initGrowth() {
               .value
               .trim();
 
-
           if (!defecto || !compromiso) {
             return;
           }
-
 
           db.collection("growth")
             .add({
               persona,
               defecto,
               compromiso,
-
               timestamp:
                 firebase.firestore.FieldValue
                   .serverTimestamp()
             })
             .then(() => {
-
               form.reset();
 
               toast(
                 "Guardado correctamente 💙"
               );
-
             })
             .catch((error) => {
-
               console.error(
                 "ERROR FIREBASE - GUARDAR GROWTH:",
                 error
@@ -748,7 +629,6 @@ function initGrowth() {
       "growthListElla"
     );
 
-
   if (!listEl || !listElla) {
     return;
   }
@@ -758,29 +638,20 @@ function initGrowth() {
     .orderBy("timestamp", "asc")
     .onSnapshot(
       (snapshot) => {
-
         listEl.innerHTML = "";
         listElla.innerHTML = "";
 
-
         snapshot.forEach((doc) => {
-
           const d = doc.data();
 
-
           const li =
-            document.createElement(
-              "li"
-            );
+            document.createElement("li");
 
           li.className =
             "growth-item";
 
-
           const defectoEl =
-            document.createElement(
-              "span"
-            );
+            document.createElement("span");
 
           defectoEl.className =
             "defecto";
@@ -788,11 +659,8 @@ function initGrowth() {
           defectoEl.textContent =
             d.defecto || "";
 
-
           const compromisoEl =
-            document.createElement(
-              "span"
-            );
+            document.createElement("span");
 
           compromisoEl.className =
             "compromiso";
@@ -800,12 +668,10 @@ function initGrowth() {
           compromisoEl.textContent =
             d.compromiso || "";
 
-
           li.append(
             defectoEl,
             compromisoEl
           );
-
 
           if (d.persona === "el") {
             listEl.appendChild(li);
@@ -815,7 +681,6 @@ function initGrowth() {
         });
       },
       (error) => {
-
         console.error(
           "ERROR FIREBASE - GROWTH:",
           error
@@ -843,7 +708,6 @@ function initDreams() {
       "dreamList"
     );
 
-
   if (!form || !list) {
     return;
   }
@@ -852,9 +716,7 @@ function initDreams() {
   form.addEventListener(
     "submit",
     (e) => {
-
       e.preventDefault();
-
 
       const texto =
         document
@@ -864,32 +726,26 @@ function initDreams() {
           .value
           .trim();
 
-
       if (!texto) {
         return;
       }
-
 
       db.collection("dreams")
         .add({
           texto,
           cumplido: false,
-
           timestamp:
             firebase.firestore.FieldValue
               .serverTimestamp()
         })
         .then(() => {
-
           form.reset();
 
           toast(
             "Sueño añadido 💙"
           );
-
         })
         .catch((error) => {
-
           console.error(
             "ERROR FIREBASE - GUARDAR DREAM:",
             error
@@ -907,45 +763,28 @@ function initDreams() {
     .orderBy("timestamp", "asc")
     .onSnapshot(
       (snapshot) => {
-
         list.innerHTML = "";
 
-
         snapshot.forEach((doc) => {
-
           const d = doc.data();
 
-
           const li =
-            document.createElement(
-              "li"
-            );
-
+            document.createElement("li");
 
           li.className =
             "dream-item" +
-            (
-              d.cumplido
-                ? " achieved"
-                : ""
-            );
-
+            (d.cumplido ? " achieved" : "");
 
           const input =
-            document.createElement(
-              "input"
-            );
+            document.createElement("input");
 
           input.type = "checkbox";
 
           input.checked =
             d.cumplido === true;
 
-
           const span =
-            document.createElement(
-              "span"
-            );
+            document.createElement("span");
 
           span.className =
             "dream-text";
@@ -953,11 +792,9 @@ function initDreams() {
           span.textContent =
             d.texto || "";
 
-
           input.addEventListener(
             "change",
             (ev) => {
-
               db.collection("dreams")
                 .doc(doc.id)
                 .update({
@@ -965,14 +802,11 @@ function initDreams() {
                     ev.target.checked
                 })
                 .then(() => {
-
                   toast(
                     "Sueño actualizado ✓"
                   );
-
                 })
                 .catch((error) => {
-
                   console.error(
                     "ERROR FIREBASE - ACTUALIZAR DREAM:",
                     error
@@ -985,7 +819,6 @@ function initDreams() {
             }
           );
 
-
           li.append(
             input,
             span
@@ -995,7 +828,6 @@ function initDreams() {
         });
       },
       (error) => {
-
         console.error(
           "ERROR FIREBASE - DREAMS:",
           error
@@ -1023,7 +855,6 @@ function initNotes() {
       "notesFeed"
     );
 
-
   if (!form || !feed) {
     return;
   }
@@ -1032,9 +863,7 @@ function initNotes() {
   form.addEventListener(
     "submit",
     (e) => {
-
       e.preventDefault();
-
 
       const texto =
         document
@@ -1044,38 +873,31 @@ function initNotes() {
           .value
           .trim();
 
-
       const autor =
         document.getElementById(
           "noteAutor"
         ).value;
 
-
       if (!texto) {
         return;
       }
-
 
       db.collection("notes")
         .add({
           texto,
           autor,
-
           timestamp:
             firebase.firestore.FieldValue
               .serverTimestamp()
         })
         .then(() => {
-
           form.reset();
 
           toast(
             "Mensaje guardado 💙"
           );
-
         })
         .catch((error) => {
-
           console.error(
             "ERROR FIREBASE - GUARDAR NOTE:",
             error
@@ -1094,28 +916,19 @@ function initNotes() {
     .limit(50)
     .onSnapshot(
       (snapshot) => {
-
         feed.innerHTML = "";
 
-
         snapshot.forEach((doc) => {
-
           const d = doc.data();
 
-
           const card =
-            document.createElement(
-              "div"
-            );
+            document.createElement("div");
 
           card.className =
             "note-card";
 
-
           const autorEl =
-            document.createElement(
-              "span"
-            );
+            document.createElement("span");
 
           autorEl.className =
             "autor";
@@ -1123,24 +936,17 @@ function initNotes() {
           autorEl.textContent =
             d.autor || "";
 
-
           const textoEl =
-            document.createElement(
-              "p"
-            );
+            document.createElement("p");
 
           textoEl.textContent =
             d.texto || "";
 
-
           const fechaEl =
-            document.createElement(
-              "span"
-            );
+            document.createElement("span");
 
           fechaEl.className =
             "fecha";
-
 
           const fecha =
             d.timestamp &&
@@ -1151,17 +957,14 @@ function initNotes() {
                 )
               : "";
 
-
           fechaEl.textContent =
             fecha;
-
 
           if (d.autor) {
             card.appendChild(
               autorEl
             );
           }
-
 
           card.appendChild(
             textoEl
@@ -1171,12 +974,10 @@ function initNotes() {
             fechaEl
           );
 
-
           feed.appendChild(card);
         });
       },
       (error) => {
-
         console.error(
           "ERROR FIREBASE - NOTES:",
           error
@@ -1209,7 +1010,6 @@ function initTodos() {
       "todoDone"
     );
 
-
   if (
     !form ||
     !pendingList ||
@@ -1222,9 +1022,7 @@ function initTodos() {
   form.addEventListener(
     "submit",
     (e) => {
-
       e.preventDefault();
-
 
       const texto =
         document
@@ -1234,32 +1032,26 @@ function initTodos() {
           .value
           .trim();
 
-
       if (!texto) {
         return;
       }
-
 
       db.collection("todos")
         .add({
           texto,
           hecho: false,
-
           timestamp:
             firebase.firestore.FieldValue
               .serverTimestamp()
         })
         .then(() => {
-
           form.reset();
 
           toast(
             "Pendiente añadido 💙"
           );
-
         })
         .catch((error) => {
-
           console.error(
             "ERROR FIREBASE - GUARDAR TODO:",
             error
@@ -1277,37 +1069,26 @@ function initTodos() {
     .orderBy("timestamp", "asc")
     .onSnapshot(
       (snapshot) => {
-
         pendingList.innerHTML = "";
         doneList.innerHTML = "";
 
-
         snapshot.forEach((doc) => {
-
           const d = doc.data();
 
-
           const li =
-            document.createElement(
-              "li"
-            );
-
+            document.createElement("li");
 
           const check =
-            document.createElement(
-              "input"
-            );
+            document.createElement("input");
 
           check.type = "checkbox";
 
           check.checked =
             d.hecho === true;
 
-
           check.addEventListener(
             "change",
             (ev) => {
-
               db.collection("todos")
                 .doc(doc.id)
                 .update({
@@ -1315,14 +1096,11 @@ function initTodos() {
                     ev.target.checked
                 })
                 .then(() => {
-
                   toast(
                     "Pendiente actualizado ✓"
                   );
-
                 })
                 .catch((error) => {
-
                   console.error(
                     "ERROR FIREBASE - ACTUALIZAR TODO:",
                     error
@@ -1335,11 +1113,8 @@ function initTodos() {
             }
           );
 
-
           const span =
-            document.createElement(
-              "span"
-            );
+            document.createElement("span");
 
           span.className =
             "todo-text";
@@ -1347,11 +1122,8 @@ function initTodos() {
           span.textContent =
             d.texto || "";
 
-
           const remove =
-            document.createElement(
-              "button"
-            );
+            document.createElement("button");
 
           remove.className =
             "todo-remove";
@@ -1359,23 +1131,18 @@ function initTodos() {
           remove.textContent =
             "✕";
 
-
           remove.addEventListener(
             "click",
             () => {
-
               db.collection("todos")
                 .doc(doc.id)
                 .delete()
                 .then(() => {
-
                   toast(
                     "Pendiente eliminado."
                   );
-
                 })
                 .catch((error) => {
-
                   console.error(
                     "ERROR FIREBASE - ELIMINAR TODO:",
                     error
@@ -1388,25 +1155,20 @@ function initTodos() {
             }
           );
 
-
           li.append(
             check,
             span,
             remove
           );
 
-
           if (d.hecho) {
             doneList.appendChild(li);
           } else {
             pendingList.appendChild(li);
           }
-
         });
-
       },
       (error) => {
-
         console.error(
           "ERROR FIREBASE - TODOS:",
           error
@@ -1418,4 +1180,4 @@ function initTodos() {
         );
       }
     );
-}
+} 
