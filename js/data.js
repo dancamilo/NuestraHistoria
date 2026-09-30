@@ -31,7 +31,9 @@ const CONFIG = {
     { src: "image/foto1.jpg", fecha: "" },
     { src: "image/foto2.jpg", fecha: "" },
     { src: "image/foto3.jpg", fecha: "" },
-    { src: "image/foto4.jpg", fecha: "" }
+    { src: "image/foto4.jpg", fecha: "" },
+    { src: "image/foto5.jpg", fecha: "" },
+    { src: "image/foto6.jpg", fecha: "" }
   ]
 
 };
