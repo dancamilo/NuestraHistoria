@@ -1180,41 +1180,4 @@ function initTodos() {
         );
       }
     );
-
-    /* ============================================================
-   NIEVE NAVIDEÑA
-   ============================================================ */
-
-document.addEventListener("DOMContentLoaded", () => {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    return;
-  }
-
-  if (document.querySelector(".snow-container")) {
-    return;
-  }
-
-  const snowContainer = document.createElement("div");
-  snowContainer.className = "snow-container";
-  snowContainer.setAttribute("aria-hidden", "true");
-
-  document.body.appendChild(snowContainer);
-
-  const totalSnowflakes = 35;
-
-  for (let i = 0; i < totalSnowflakes; i++) {
-    const snowflake = document.createElement("span");
-
-    snowflake.className = "snowflake";
-    snowflake.textContent = "❄";
-
-    snowflake.style.left = Math.random() * 100 + "%";
-    snowflake.style.fontSize = (8 + Math.random() * 12) + "px";
-    snowflake.style.animationDuration = (8 + Math.random() * 12) + "s";
-    snowflake.style.animationDelay = (-Math.random() * 15) + "s";
-
-    snowContainer.appendChild(snowflake);
-  }
-});
-
 } 
