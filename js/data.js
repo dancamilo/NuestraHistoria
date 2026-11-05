@@ -33,7 +33,13 @@ const CONFIG = {
     { src: "image/foto3.jpg", fecha: "" },
     { src: "image/foto4.jpg", fecha: "" },
     { src: "image/foto5.jpg", fecha: "" },
-    { src: "image/foto6.jpg", fecha: "" }
+    { src: "image/foto6.jpg", fecha: "" },
+    { src: "image/foto7.jpg", fecha: "" },
+    { src: "image/foto8.jpg", fecha: "" },
+    { src: "image/foto9.jpg", fecha: "" },
+    { src: "image/foto10.jpg", fecha: "" },
+    { src: "image/foto11.jpg", fecha: "" }
+
   ]
 
 };
