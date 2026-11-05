@@ -564,3 +564,315 @@ input, textarea, select {
 .spotify-status.is-connected {
   color: var(--navy-700);
 }
+
+/* ============================================================
+   EDICIÓN NAVIDEÑA — CAPA VISUAL
+   Se añade al final del CSS original.
+   No modifica JavaScript, datos ni conexiones.
+   ============================================================ */
+
+:root {
+  --beige-50: #f7f5ed;
+  --beige-100: #e9eee5;
+  --beige-200: #d5dfd2;
+  --navy-900: #174b35;
+  --navy-700: #286b49;
+  --sky-300: #bd3540;
+  --sky-100: #f5e8e5;
+  --ink: #26352b;
+  --ink-soft: #68766b;
+  --white: #fffefa;
+  --shadow-soft: 0 14px 34px rgba(27, 65, 43, .11);
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 8% 4%, rgba(189,53,64,.055), transparent 28rem),
+    radial-gradient(ellipse at 92% 16%, rgba(40,107,73,.07), transparent 30rem),
+    var(--beige-50);
+}
+
+/* Nieve ambiental: decorativa y no intercepta clics */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -100px 0 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: .42;
+  background-image:
+    radial-gradient(2px 2px at 30px 40px, #fff 98%, transparent),
+    radial-gradient(2px 2px at 110px 150px, #fff 98%, transparent),
+    radial-gradient(1.5px 1.5px at 190px 80px, #fff 98%, transparent),
+    radial-gradient(2px 2px at 260px 210px, #fff 98%, transparent),
+    radial-gradient(1.5px 1.5px at 330px 120px, #fff 98%, transparent);
+  background-size: 380px 280px;
+  animation: navidad-nieve 18s linear infinite;
+}
+
+@keyframes navidad-nieve {
+  from { transform: translate3d(0, -30px, 0); }
+  to { transform: translate3d(35px, 280px, 0); }
+}
+
+h1, h2, h3 { color: var(--navy-900); }
+
+h2 { position: relative; }
+
+h2::after {
+  content: " ✦";
+  color: #bd3540;
+  font-family: var(--font-body);
+  font-size: .62em;
+  vertical-align: .18em;
+}
+
+/* Pantalla de entrada */
+.lock-screen {
+  background:
+    radial-gradient(circle at 15% 18%, rgba(189,53,64,.12), transparent 23rem),
+    radial-gradient(circle at 85% 82%, rgba(23,75,53,.16), transparent 25rem),
+    linear-gradient(145deg, #f7f5ed, #e5eee4);
+}
+
+.lock-card {
+  border: 1px solid rgba(23,75,53,.12);
+  border-top: 4px solid #bd3540;
+  position: relative;
+}
+
+.lock-card::before {
+  content: "❄  ✦  ❄";
+  display: block;
+  color: #bd3540;
+  letter-spacing: .45em;
+  margin: -15px 0 18px;
+  font-size: .9rem;
+}
+
+.lock-eyebrow {
+  color: #bd3540;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.lock-form input { border-color: #d5dfd2; }
+
+.lock-form button,
+.inline-form button,
+.btn-solid {
+  background: #174b35;
+}
+
+.lock-form button:hover,
+.inline-form button:hover,
+.btn-solid:hover {
+  background: #286b49;
+}
+
+/* Navegación */
+.nav {
+  background: rgba(247,245,237,.92);
+  border-bottom: 1px solid rgba(23,75,53,.16);
+  box-shadow: 0 4px 20px rgba(27,65,43,.045);
+}
+
+.nav-brand {
+  color: #174b35;
+  position: relative;
+  display: inline-block;
+  padding-right: 24px;
+}
+
+.nav-brand::after {
+  content: "🎅";
+  position: absolute;
+  right: -2px;
+  top: -14px;
+  font-family: sans-serif;
+  font-size: 1.05rem;
+  transform: rotate(15deg);
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: #174b35;
+  border-color: #bd3540;
+}
+
+.nav-toggle { color: #174b35; }
+
+/* Portada */
+.hero {
+  min-height: 86vh;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(255,255,255,.95), transparent 48%),
+    linear-gradient(135deg, #e6eee3 0%, #f8f5ec 48%, #f2e5e2 100%);
+}
+
+.hero::before,
+.hero::after {
+  position: absolute;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.hero::before {
+  content: "🎄";
+  left: clamp(16px, 8vw, 110px);
+  bottom: 8%;
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  opacity: .82;
+  filter: drop-shadow(0 10px 12px rgba(25,65,42,.12));
+}
+
+.hero::after {
+  content: "☃️";
+  right: clamp(16px, 9vw, 120px);
+  bottom: 9%;
+  font-size: clamp(2.8rem, 7vw, 5.8rem);
+  opacity: .85;
+  filter: drop-shadow(0 10px 12px rgba(25,65,42,.10));
+}
+
+.hero-inner { position: relative; z-index: 1; }
+.hero-names { color: #286b49; }
+
+#diasJuntos {
+  color: #174b35;
+  text-shadow: 0 5px 0 rgba(189,53,64,.07);
+}
+
+.hero-counter-label { color: #bd3540; }
+.hero-line::before { content: "❄  "; color: #bd3540; }
+.hero-line::after { content: "  ❄"; color: #174b35; }
+
+/* Secciones */
+.section-beige-dark {
+  background:
+    linear-gradient(120deg, rgba(23,75,53,.035), transparent 45%),
+    #e9eee5;
+}
+
+.section { position: relative; }
+.section-inner > h2 { text-wrap: balance; }
+
+/* Formularios */
+.inline-form input,
+.inline-form textarea,
+.inline-form select,
+.lock-form input {
+  border-color: #d5dfd2;
+  box-shadow: 0 2px 8px rgba(23,75,53,.035);
+}
+
+.inline-form input:focus,
+.inline-form textarea:focus,
+.inline-form select:focus,
+.lock-form input:focus {
+  outline-color: #286b49;
+  border-color: #286b49;
+}
+
+/* Galería */
+.thumb {
+  background: linear-gradient(135deg, #e6eee3, #f2e5e2);
+  border: 1px solid rgba(23,75,53,.10);
+}
+
+.thumb .fecha {
+  background: linear-gradient(to top, rgba(23,75,53,.82), transparent);
+}
+
+.thumb.no-image .fecha { color: #174b35; }
+
+/* Línea de tiempo */
+.timeline { border-color: rgba(189,53,64,.65); }
+
+.timeline-item::before {
+  background: #174b35;
+  box-shadow: 0 0 0 4px #e9eee5;
+}
+
+.timeline-date { color: #bd3540; }
+.timeline-title { color: #174b35; }
+
+/* Crecimiento juntos */
+.book {
+  border: 1px solid rgba(23,75,53,.12);
+  background: #fffefa;
+}
+
+.book-spine { background: #d5dfd2; }
+.growth-item { border-color: #bd3540; }
+.growth-item .defecto { color: #174b35; }
+
+/* Sueños, notas y pendientes */
+.dream-item,
+.note-card,
+.todo-list li {
+  border: 1px solid rgba(23,75,53,.09);
+  background: #fffefa;
+}
+
+.dream-item input[type="checkbox"] { accent-color: #174b35; }
+.dream-text { color: #26352b; }
+
+/* Playlist */
+.btn-ghost {
+  border-color: #174b35 !important;
+  color: #174b35;
+}
+
+.btn-ghost:hover {
+  background: #174b35;
+  color: #fffefa;
+}
+
+.song-log li { border-color: #d5dfd2; }
+
+/* Dashboard */
+.note-card .autor { color: #bd3540; }
+.todo-subtitle { color: #286b49; }
+
+/* Pie de página */
+.footer {
+  position: relative;
+  background: #174b35;
+  color: rgba(255,254,250,.85);
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+
+.footer p { color: rgba(255,254,250,.85); }
+
+.footer::before {
+  content: "✦  🎄  ✦";
+  display: block;
+  color: #f0d7a6;
+  font-style: normal;
+  letter-spacing: .35em;
+  margin-bottom: 12px;
+}
+
+.toast { background: #174b35; }
+.spotify-status.is-connected { color: #286b49; }
+
+/* Adaptación móvil */
+@media (max-width: 760px) {
+  .nav-links {
+    background: rgba(247,245,237,.98);
+    border-color: #d5dfd2;
+  }
+
+  .hero { min-height: 78vh; }
+  .hero::before { bottom: 3%; left: 3%; }
+  .hero::after { bottom: 4%; right: 3%; }
+}
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; }
+}
